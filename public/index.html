@@ -26,7 +26,7 @@
 
         socket.on('receivedMessage', (message) => {
             renderMessage(message)
-            div.scrollTop(div.prop('scrollHeight'))
+            div.scrollTop(div('scrollHeight'))
         })
 
         socket.on('previousMessages', messages => {
