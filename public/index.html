@@ -45,6 +45,7 @@
                     message: message
                 }
                 renderMessage(messageObject)
+                $('input[name=message]').text('')
                 socket.emit('sendMessage', messageObject)
             }
         })
