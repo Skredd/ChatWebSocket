@@ -19,14 +19,14 @@
     </form>
     <script type="text/javascript">
         var socket = io(`https://web-socket-comeco.herokuapp.com`)
-        var div = $('#messages')
+        var div = document.getElementsByName('messages')
         renderMessage = (message) => {
             $('.messages').append('<div class="message"><strong>' + message.author + '</strong>: ' + message.message + '</div>');
         }
 
         socket.on('receivedMessage', (message) => {
             renderMessage(message)
-            div.scrollTop(div('scrollHeight'))
+            div.scrollTop = div.scrollHeight;
         })
 
         socket.on('previousMessages', messages => {
