@@ -19,7 +19,6 @@ app.use('/', (req, res) => {
 let messages = []
 
 io.on('connection', (socket) => {
-    socket.on('getUrl', () => process.env.URL)
     console.log(`Socket conectado: ${socket.id}`)
     socket.emit('previousMessages', messages)
     socket.on('sendMessage', (data) => {
