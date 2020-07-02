@@ -24,6 +24,10 @@
             $('.messages').append('<div class="message"><strong>' + message.author + '</strong>: ' + message.message + '</div>');
         }
 
+        socket.on('receivedMessage', (message) => {
+            renderMessage(message)
+        })
+
         socket.on('previousMessages', messages => {
             for (message of messages)
                 renderMessage(message)
