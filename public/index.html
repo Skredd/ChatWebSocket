@@ -18,7 +18,8 @@
         <button type="submit">Enviar</button>
     </form>
     <script type="text/javascript">
-        const urlChat = process.env.URL
+        const URL = socket.emit('getUrl')
+
         var socket = io(`${urlChat}`)
 
         renderMessage = (message) => {
