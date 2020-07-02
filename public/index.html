@@ -18,9 +18,7 @@
         <button type="submit">Enviar</button>
     </form>
     <script type="text/javascript">
-        const urlChat = socket.emit('getUrl')
-
-        var socket = io(`${urlChat}`)
+        var socket = io(`https://web-socket-comeco.herokuapp.com`)
 
         renderMessage = (message) => {
             $('.messages').append('<div class="message"><strong>' + message.author + '</strong>: ' + message.message + '</div>');
