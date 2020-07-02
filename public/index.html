@@ -19,7 +19,7 @@
     </form>
     <script type="text/javascript">
         var socket = io(`https://web-socket-comeco.herokuapp.com`)
-        var div = $('.messages')
+        var div = $('#messages')
         renderMessage = (message) => {
             $('.messages').append('<div class="message"><strong>' + message.author + '</strong>: ' + message.message + '</div>');
         }
