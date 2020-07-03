@@ -38,3 +38,7 @@ form input[type='text'] {
     border: 2px solid #45C5BF;
     height: 550px;
 }
+
+#sala_chat {
+    display: none;
+}
