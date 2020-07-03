@@ -43,7 +43,7 @@ form input[type='text'] {
     display: none;
 }
 
-#acesso_usuario {
+#create_username {
     height: 30px;
     left: 50%;
     margin-left: -160px;
