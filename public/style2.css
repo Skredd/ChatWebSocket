@@ -42,3 +42,13 @@ form input[type='text'] {
 #sala_chat {
     display: none;
 }
+
+#acesso_usuario {
+    height: 30px;
+    left: 50%;
+    margin-left: -160px;
+    margin-top: -15px;
+    position: fixed;
+    top: 50%;
+    width: 320px;
+}
