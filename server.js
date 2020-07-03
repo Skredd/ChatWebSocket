@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const { callbackify } = require('util');
 
 const app = express();
 const server = require('http').createServer(app);
@@ -17,8 +18,20 @@ app.use('/', (req, res) => {
 })
 
 let messages = []
+let users = []
 
 io.on('connection', (socket) => {
+    socket.on('join', (apelido, callback) => {
+        if (!(apelido in users)) {
+            socket.apelido = apelido;
+            users[apelido] = socket;
+            io.sockets.emit("atualizar usuarios", Object.keys(usuarios));
+            callbackify(true)
+        } else {
+            callback(false)
+        }
+    })
+
     socket.emit('previousMessages', messages)
     socket.on('sendMessage', (data) => {
         if (messages.length === 50) messages.shift()
