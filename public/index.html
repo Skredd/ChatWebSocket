@@ -22,7 +22,7 @@
     </div>
 
     <script type='text/javascript'>
-        var socket = io(`http://localhost:3000/`)
+        var socket = io(`https://web-socket-comeco.herokuapp.com/`)
 
         socket.on('renderMessage', (msg) => {
             renderMessage(msg)
