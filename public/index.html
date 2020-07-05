@@ -1,86 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>Chat Xandão</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
-    <link rel="stylesheet" href="style2.css">
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js'></script>
+    <link rel='stylesheet' href='style3.css'>
 </head>
 
 <body>
-    <div id="create_username">
-        <form id="login">
-            <input type="text" placeholder="Insira seu apelido" name="apelido" id="apelido" />
-            <input type="submit" value="entrar" />
-        </form>
+    <div id='register_user'>
+        <input type='text' placeholder='Digite seu apelido' id='username' />
+        <button type='button' onclick='registerUser()'> Pronto </button>
     </div>
-    <div id="sala_chat">
-        <form id='chat'>
-            <input type="text" name="username" placeholder="Digite seu usuário">
-            <div class="messages"></div>
-            <select multiple="multiple" id='lista_usuarios'><option value=''>Todos</option></select>
-            <input type="text" name="message" placeholder="Digite sua mensagem">
-            <button type="submit">Enviar</button>
-        </form>
+    <div id='chat'>
+        <div id='message_history'></div>
+        <input type='text' id='message' placeholder='Digite sua mensagem' />
+        <button type='button' onclick='sendMessage()'> Enviar </button>
     </div>
 
-    <script type="text/javascript">
-        $("form#login").submit((event) => {
-            e.preventDefault()
-            socket.emit("join", $(this).find("#apelido").val(), (valido) => {
-                if (valido) {
-                    $("#create_username").hide();
-                    $("#sala_chat").show();
+    <script type='text/javascript'>
+        var socket = io(`http://localhost:3000/`)
+
+        socket.on('renderMessage', (msg) => {
+            renderMessage(msg)
+        })
+
+        socket.on('renderHistory', (msgHistory) => {
+            for (message of msgHistory) renderMessage(message)
+        })
+
+        renderMessage = (message) => {
+            console.log(message)
+            $('#message_history').append('<div class="message"><strong>[' + message.author + ']</strong> ' + message.message + '</div>')
+        }
+
+        sendMessage = () => {
+            let message = $('#message').val()
+            if (message) {
+                $('#message').val('')
+                socket.emit('sendMessage', message)
+            }
+        }
+
+        registerUser = () => {
+            socket.emit('newUser', $('#username').val(), function(valid) {
+                if (valid) {
+                    console.log(valid)
+                    $('#register_user').hide()
+                    $('#chat').show()
+
                 } else {
-                    $("#create_username").val("");
-                    alert("Nome já utilizado nesta sala");
+                    alert('Apelido ja esta em uso')
+                    $('#username').val('')
                 }
             })
-        })
-
-        var socket = io(`https://web-socket-comeco.herokuapp.com`)
-        var div = document.getElementsByName('messages')
-        renderMessage = (message) => {
-            $('.messages').append('<div class="message"><strong>' + message.author + '</strong>: ' + message.message + '</div>');
         }
-        socket.on("atualizar usuarios", function(usuarios) {
-            $("#lista_usuarios").empty();
-            $("#lista_usuarios").append("<option value=''>Todos</option>");
-            $.each(usuarios, function(indice) {
-                var opcao_usuario = $("<option />").text(usuarios[indice]);
-                $("#lista_usuarios").append(opcao_usuario);
-            });
-        });
-
-        socket.on('receivedMessage', (message) => {
-            renderMessage(message)
-            div.scrollTop = div.scrollHeight;
-        })
-
-        socket.on('previousMessages', messages => {
-            for (message of messages)
-                renderMessage(message)
-        })
-
-        $('#chat').submit(function(event) {
-
-            event.preventDefault();
-            var author = $('input[name=username]').val()
-            var message = $('input[name=message]').val()
-            if (author.length && message.length) {
-                console.log(author, message)
-                var messageObject = {
-                    author: author,
-                    message: message
-                }
-                renderMessage(messageObject)
-                $('input[name=message]').val('')
-                socket.emit('sendMessage', messageObject)
-            }
-        })
     </script>
 </body>
 

@@ -21,22 +21,26 @@ let messages = []
 let users = []
 
 io.on('connection', (socket) => {
-    socket.on('join', (apelido, callback) => {
-        if (!(apelido in users)) {
-            socket.apelido = apelido;
-            users[apelido] = socket;
-            io.sockets.emit("atualizar usuarios", Object.keys(usuarios));
-            callbackify(true)
-        } else {
-            callback(false)
-        }
+    socket.emit('renderHistory', messages)
+
+    console.log(`new user ${socket.id}`)
+
+    socket.on('newUser', (user, callback) => {
+        if (!(user in users)) {
+            socket.user = user
+            users[user] = socket.id
+            callback(true)
+        } else callback(false)
     })
 
-    socket.emit('previousMessages', messages)
-    socket.on('sendMessage', (data) => {
-        if (messages.length === 50) messages.shift()
-        messages.push(data)
-        socket.broadcast.emit('receivedMessage', data)
+    socket.on('sendMessage', (message) => {
+        let objMessage = {
+            message,
+            author: socket.user
+        }
+        messages.push(objMessage)
+        console.log(objMessage)
+        io.emit('renderMessage', objMessage)
     })
 })
 

@@ -1,0 +1,26 @@
+body {
+    background-color: black;
+}
+
+#register_user {
+    justify-content: center;
+    margin-top: 25%;
+}
+
+#chat {
+    display: none;
+    justify-content: center;
+    height: 550px;
+}
+
+#message {
+    width: 1000px;
+    margin-left: 5%;
+}
+
+#message_history {
+    height: 100%;
+    background: white;
+    margin-left: 5%;
+    margin-right: 5%;
+}
