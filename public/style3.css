@@ -14,6 +14,7 @@ body {
 }
 
 #message {
+    border-radius: 10px;
     width: 1000px;
     margin-left: 5%;
 }
@@ -23,6 +24,8 @@ body {
     background: white;
     margin-left: 5%;
     margin-right: 5%;
-    border-style: solid;
+    border-style: groove;
     border-width: 5px;
+    border-color: powderblue;
+    border-radius: 2px;
 }
