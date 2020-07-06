@@ -18,7 +18,7 @@
     <form id='chat'>
         <div id='message_history'></div>
         <input type='text' id='message' placeholder='      Digite sua mensagem' />
-        <button type='button' onclick='sendMessage()'> Enviar </button>
+        <button type='submit' id='enviar'> Enviar </button>
     </form>
 
     <script type='text/javascript'>
@@ -37,13 +37,15 @@
             $('#message_history').append('<div class="message"><strong>[' + message.author + ']</strong> ' + message.message + '</div>')
         }
 
-        sendMessage = () => {
+        $('form#chat').submit((event) => {
+            event.preventDefault();
+
             let message = $('#message').val()
             if (message) {
                 $('#message').val('')
                 socket.emit('sendMessage', message)
             }
-        }
+        })
 
         registerUser = () => {
             socket.emit('newUser', $('#username').val(), function (valid) {
